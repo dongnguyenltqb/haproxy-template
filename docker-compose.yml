@@ -12,6 +12,7 @@ services:
     depends_on:
       - nginx80
       - nginx81
+      - nginx82
       - wsecho
       - wsecho2
   nginx80:
@@ -20,6 +21,12 @@ services:
       - haproxynet
   nginx81:
     image: nginx
+    networks: 
+      - haproxynet
+  nginx82:
+    image: nginx
+    volumes:
+      - "./nginx.conf:/etc/nginx/nginx.conf"
     networks: 
       - haproxynet
   wsecho:
