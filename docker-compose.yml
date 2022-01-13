@@ -1,0 +1,39 @@
+version: "3.9" 
+services:
+  haproxy:
+    build:
+      context: haproxy
+      dockerfile: Dockerfile
+    networks: 
+      - haproxynet
+    ports:
+      - "4006:80"
+      - "4007:80"
+    depends_on:
+      - nginx80
+      - nginx81
+      - wsecho
+      - wsecho2
+  nginx80:
+    image: nginx
+    networks: 
+      - haproxynet
+  nginx81:
+    image: nginx
+    networks: 
+      - haproxynet
+  wsecho:
+    image: jmalloc/echo-server
+    environment:
+      - PORT=8743
+    networks:
+      - haproxynet
+  wsecho2:
+    image: jmalloc/echo-server
+    environment:
+      - PORT=8744
+    networks:
+      - haproxynet
+networks:
+    haproxynet:
+        driver: bridge
